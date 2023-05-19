@@ -31,25 +31,27 @@ module HotelFinder
       response = Net::HTTP.get(URI(search_url))
 
       first_result = response.match(%r{<a href="(/Hotel_Review[^"]+)"})
-      return nil unless first_result
+      return nil unless first_result && first_result[1]
 
       "#{TRIPADVISOR_URL_BASE}#{first_result[1]}"
     end
 
     def booking_url
       search_url = "#{BOOKING_URL_BASE}/searchresults.html?ss=#{URI.encode_www_form_component(@hotel_name)}"
-    response = Net::HTTP.get(URI(search_url))
-    first_result = response.match(%r{<a href="(/hotel[^"]+)"})
-    return nil unless first_result
+      response = Net::HTTP.get(URI(search_url))
 
-    "#{BOOKING_URL_BASE}#{first_result[1]}"
+      first_result = response.match(%r{<a href="(/hotel[^"]+)"})
+      return nil unless first_result && first_result[1]
+
+      "#{BOOKING_URL_BASE}#{first_result[1]}"
     end
 
     def holidaycheck_url
       search_url = "#{HOLIDAYCHECK_URL_BASE}/search?hotel=#{URI.encode_www_form_component(@hotel_name)}"
       response = Net::HTTP.get(URI(search_url))
+
       first_result = response.match(%r{<a href="(/hi[^"]+)"})
-      return nil unless first_result
+      return nil unless first_result && first_result[1]
 
       "#{HOLIDAYCHECK_URL_BASE}#{first_result[1]}"
     end
