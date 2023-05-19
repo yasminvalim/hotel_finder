@@ -22,7 +22,15 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Execute in your terminal:
+
+    $ bin/exe/hotel_finder.rb
+
+It will be a message asking for to type a Hotel.
+
+Type it and see the results. 
+
+
 
 ## Development
 
