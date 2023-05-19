@@ -9,6 +9,6 @@ finder = HotelFinder::Finder.new(hotel_name)
 urls = finder.match
 
 urls.each do |source, url|
-  puts "#{url} for #{source.capitalize}:" if url
+  puts "#{url} for #{source.capitalize}" if url
 end
 

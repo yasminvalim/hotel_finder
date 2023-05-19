@@ -16,26 +16,42 @@ module HotelFinder
     end
 
     def match
-      urls = {}
-      urls[:booking] = booking_url
-      urls[:holidaycheck] = holidaycheck_url
-      urls[:tripadvisor] = tripadvisor_url
-    
-      urls
+       urls = {}
+  urls[:booking] = booking_url
+  urls[:holidaycheck] = holidaycheck_url
+  urls[:tripadvisor] = tripadvisor_url
+
+  urls
     end
 
     private
 
     def tripadvisor_url
-      "#{TRIPADVISOR_URL_BASE}/Search?q=#{URI.encode_www_form_component(@hotel_name)}"
+      search_url = "#{TRIPADVISOR_URL_BASE}/Search?q=#{URI.encode_www_form_component(@hotel_name)}"
+      response = Net::HTTP.get(URI(search_url))
+
+      first_result = response.match(%r{<a href="(/Hotel_Review[^"]+)"})
+      return nil unless first_result
+
+      "#{TRIPADVISOR_URL_BASE}#{first_result[1]}"
     end
 
     def booking_url
-      "#{BOOKING_URL_BASE}/searchresults.html?ss=#{URI.encode_www_form_component(@hotel_name)}"
+      search_url = "#{BOOKING_URL_BASE}/searchresults.html?ss=#{URI.encode_www_form_component(@hotel_name)}"
+    response = Net::HTTP.get(URI(search_url))
+    first_result = response.match(%r{<a href="(/hotel[^"]+)"})
+    return nil unless first_result
+
+    "#{BOOKING_URL_BASE}#{first_result[1]}"
     end
 
     def holidaycheck_url
-      "#{HOLIDAYCHECK_URL_BASE}/search?hotel=#{URI.encode_www_form_component(@hotel_name)}"
+      search_url = "#{HOLIDAYCHECK_URL_BASE}/search?hotel=#{URI.encode_www_form_component(@hotel_name)}"
+      response = Net::HTTP.get(URI(search_url))
+      first_result = response.match(%r{<a href="(/hi[^"]+)"})
+      return nil unless first_result
+
+      "#{HOLIDAYCHECK_URL_BASE}#{first_result[1]}"
     end
   end
 end
