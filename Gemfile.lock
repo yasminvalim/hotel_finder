@@ -1,0 +1,19 @@
+PATH
+  remote: .
+  specs:
+    hotel_finder (0.1.0)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    rake (13.0.6)
+
+PLATFORMS
+  arm64-darwin-21
+
+DEPENDENCIES
+  hotel_finder!
+  rake (~> 13.0)
+
+BUNDLED WITH
+   2.2.22
